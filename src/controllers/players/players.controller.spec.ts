@@ -1,7 +1,7 @@
-import { Test, TestingModule } from '@nestjs/testing';
-import { PlayersController } from './players.controller';
+import { Test, TestingModule } from "@nestjs/testing";
+import { PlayersController } from "./players.controller";
 
-describe('PlayersController', () => {
+describe("PlayersController", () => {
   let playersController: PlayersController;
 
   beforeEach(async () => {
@@ -13,9 +13,11 @@ describe('PlayersController', () => {
     playersController = app.get<PlayersController>(PlayersController);
   });
 
-  describe('root', () => {
+  describe("root", () => {
     it('should return "Hello World!"', () => {
-      expect(playersController.create()).toBe('This endpoint creates a new player');
+      expect(playersController.create()).toBe(
+        "This endpoint creates a new player"
+      );
     });
   });
 });

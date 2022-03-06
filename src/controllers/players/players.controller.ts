@@ -1,16 +1,18 @@
-import { Controller,  Get,  Post } from '@nestjs/common';
+import { Body, Controller, Get, Post } from "@nestjs/common";
+import { PlayersService } from "src/controllers/players/players.service";
+import { PlayerCreateDto } from "./interfaces/player-create.interface";
 
-@Controller('players')
+@Controller("players")
 export class PlayersController {
-  constructor() {}
+  constructor(private readonly playersService: PlayersService) {}
 
-  @Post('create')
-  create(): string {
-    return 'This endpoint creates a new player';
+  @Post("create")
+  create(@Body() dto: PlayerCreateDto) {
+    return this.playersService.create(dto.name);
   }
 
-  @Get('leader-board')
+  @Get("leader-board")
   leaderBoard(): string {
-    return 'This endpoint returns the leader board'
+    return "This endpoint returns the leader board";
   }
 }

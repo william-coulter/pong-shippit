@@ -1,11 +1,11 @@
-import { Controller,  Post } from '@nestjs/common';
+import { Controller, Post } from "@nestjs/common";
 
-@Controller('games')
+@Controller("games")
 export class GamesController {
   constructor() {}
 
-  @Post('create')
+  @Post("create")
   create(): string {
-    return 'This endpoint creates a played game';
+    return "This endpoint creates a played game";
   }
 }
