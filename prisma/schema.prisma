@@ -1,0 +1,21 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = "postgresql://pong:pong@localhost:5432/pong"
+}
+
+model Player {
+  name  String @id
+  elo   Int
+  games Game[]
+}
+
+model Game {
+  id             Int    @id @default(autoincrement())
+  player_1       Player @relation(fields: [player_1_name], references: [name])
+  player_1_name  String
+  player_1_score Int
+}

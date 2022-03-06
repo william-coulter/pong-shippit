@@ -8,7 +8,18 @@ Tool for keeping track of table tennis games played at Shippit
 $ npm install
 ```
 
+There are also some additional dependencies:
+ - `docker` cli
+
 ## Running the app
+
+Ensure `docker` is running and set up your environment with:
+
+```bash
+$ npm run start-dev-environment
+```
+
+This starts the database and ensures that the `prisma` client is up-to-date.
 
 ```bash
 # development
