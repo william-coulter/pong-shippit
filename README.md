@@ -9,7 +9,8 @@ $ npm install
 ```
 
 There are also some additional dependencies:
- - `docker` cli
+
+- `docker` cli
 
 ## Running the app
 
@@ -44,3 +45,10 @@ $ npm run test:e2e
 # test coverage
 $ npm run test:cov
 ```
+
+## TODO
+
+- Error handling
+- `DTO` validation
+- environment config
+- API authentication
