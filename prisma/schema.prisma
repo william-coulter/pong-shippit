@@ -8,14 +8,30 @@ datasource db {
 }
 
 model Player {
-  name  String @id
-  elo   Int
-  games Game[]
+  name    String   @id
+  created DateTime @default(now())
+  elo     Int
+
+  playedGames PlayedGame[]
 }
 
 model Game {
-  id             Int    @id @default(autoincrement())
-  player_1       Player @relation(fields: [player_1_name], references: [name])
-  player_1_name  String
-  player_1_score Int
+  id      Int      @id @default(autoincrement())
+  created DateTime @default(now())
+
+  playedBy PlayedGame[]
+}
+
+model PlayedGame {
+  id     Int      @id @default(autoincrement())
+  played DateTime @default(now())
+
+  player1     Player @relation(fields: [player1Name], references: [name])
+  player1Name String
+  player2     Player @relation(fields: [player2Name], references: [name])
+  player2Name String
+
+  game   Game @relation(fields: [gameId], references: [id])
+  gameId Int
+
 }
