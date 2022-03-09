@@ -48,7 +48,8 @@ $ npm run test:cov
 
 ## TODO
 
+- environment config
+- services in their own module
+- API authentication
 - Error handling
 - `DTO` validation
-- environment config
-- API authentication
