@@ -12,9 +12,8 @@ model Player {
   created DateTime @default(now())
   elo     Int
 
-  games Game[]
-
-  wins Game[] @relation("wins")
+  wins   Game[] @relation("wins")
+  losses Game[] @relation("losses")
   @@map("players")
 }
 
@@ -22,17 +21,14 @@ model Game {
   id      Int      @id @default(autoincrement())
   created DateTime @default(now())
 
+  winner     Player @relation("wins", fields: [winnerName], references: [name])
+  winnerName String
+
+  loser     Player @relation("losses", fields: [loserName], references: [name])
+  loserName String
+
   winningScore Int
   losingScore  Int
 
-  // Highly controversial that I can't:
-  //    1. Define a 2-Many relationship
-  //    2. Constrain the `players` array to a length of 2
-  players Player[]
-
-  // I have this in here to ensure the winner in the `players` array is known
-  // in case insertion order of an array is not preserved
-  winner     Player @relation("wins", fields: [winnerName], references: [name])
-  winnerName String
   @@map("games")
 }
