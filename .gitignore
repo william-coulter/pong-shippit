@@ -1,3 +1,11 @@
+# npm packages
 node_modules
+
+# IDE
 .vscode
+
+# Typescript build
 dist
+
+# Database migrations
+migration.lock
