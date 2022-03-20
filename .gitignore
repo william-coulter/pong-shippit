@@ -6,6 +6,3 @@ node_modules
 
 # Typescript build
 dist
-
-# Database migrations
-migration.lock

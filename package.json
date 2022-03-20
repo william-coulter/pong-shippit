@@ -10,7 +10,7 @@
     "build": "nest build",
     "migrate": "prisma migrate",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
-    "start-dev-environment": "docker compose up -d && prisma migrate dev && prisma generate",
+    "start-local-environment": "docker compose up -d && ./scripts/apply-migrations.sh",
     "start": "nest start",
     "start:dev": "nest start --watch",
     "start:debug": "nest start --debug --watch",

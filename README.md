@@ -17,10 +17,10 @@ There are also some additional dependencies:
 Ensure `docker` is running and set up your environment with:
 
 ```bash
-$ npm run start-dev-environment
+$ npm run start-local-environment
 ```
 
-This starts the database and ensures that the `prisma` client is up-to-date.
+This starts the database and ensures its schema is up to date.
 
 ```bash
 # development
@@ -53,3 +53,4 @@ $ npm run test:cov
 - API authentication
 - Error handling
 - `DTO` validation
+- migration script stores to maintain file integrity
