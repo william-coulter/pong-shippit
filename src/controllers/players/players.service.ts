@@ -1,16 +1,12 @@
 import { Injectable } from "@nestjs/common";
-import { Player } from "@prisma/client";
-import { PrismaService } from "src/services/prisma/prisma.service";
+import { DbService } from "src/services/db/db.service";
 
 @Injectable()
 export class PlayersService {
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(private readonly db: DbService) {}
 
-  async create(name: string): Promise<Player> {
-    return this.prisma.player.create({ data: { name, elo: 1200 } });
-  }
-
-  async isPlayer(name: string): Promise<boolean> {
-    return (await this.prisma.player.count({ where: { name } })) === 1;
+  async create(name: string): Promise<void> {
+    const SQL = `INSERT INTO players_raw (name) VALUES ($1)`;
+    await this.db.query(SQL, [name]);
   }
 }

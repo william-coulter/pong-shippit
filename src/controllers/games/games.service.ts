@@ -1,14 +1,22 @@
 import { Injectable } from "@nestjs/common";
-import { Game, Prisma } from "@prisma/client";
-import { PrismaService } from "src/services/prisma/prisma.service";
+import { DbService } from "src/services/db/db.service";
+import { GameCreateDto } from "./interfaces/game-create.interface";
 
 @Injectable()
 export class GamesService {
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(private readonly db: DbService) {}
 
-  async create(data: Prisma.GameUncheckedCreateInput): Promise<Game> {
-    return this.prisma.game.create({ data });
-    // TODO: Need to update players elos - I wonder if prisma allows me
-    // to write an SQL trigger?
+  async create({
+    player1,
+    player2,
+    player1Score,
+    player2Score,
+  }: GameCreateDto): Promise<void> {
+    const SQL = `
+      INSERT INTO games_raw (player1, player2, player1_score, player2_score)
+      VALUES ($1, $2, $3, $4)`;
+
+    await this.db.query(SQL, [player1, player2, player1Score, player2Score]);
+    // TODO: DB trigger to update player elos
   }
 }
