@@ -17,6 +17,5 @@ export class GamesService {
       VALUES ($1, $2, $3, $4)`;
 
     await this.db.query(SQL, [player1, player2, player1Score, player2Score]);
-    // TODO: DB trigger to update player elos
   }
 }
