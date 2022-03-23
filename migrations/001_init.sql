@@ -16,6 +16,24 @@ CREATE TABLE games_raw (
     CONSTRAINT score_uniqueness  CHECK (player1_score <> player2_score)
 );
 
+CREATE VIEW games (id, timestamp, player1, player2, player1_score, player2_score, winner) AS
+    SELECT *, 
+    CASE 
+        WHEN player1_score > player2_score THEN player1
+        ELSE player2
+    END winner
+    FROM games_raw;
+
+CREATE VIEW leaderboard (name, elo, games, wins, losses) AS
+    SELECT p.name, p.elo,
+        COUNT(g.id) games,
+        SUM((p.name = g.winner)::INT) wins,
+        SUM((p.name <> g.winner)::INT) losses
+    FROM players_raw p
+    JOIN games g ON p.name = g.player1 OR p.name = g.player2
+    GROUP BY p.name, p.elo
+    ORDER BY elo DESC;
+
 -- See https://en.wikipedia.org/wiki/Elo_rating_system#:~:text=FIDE%20uses%20the%20following%20ranges
 -- For K-Factor ranges
 CREATE VIEW player_k_factors (name, k) AS

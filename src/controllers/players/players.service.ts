@@ -9,4 +9,14 @@ export class PlayersService {
     const SQL = `INSERT INTO players_raw (name) VALUES ($1)`;
     await this.db.query(SQL, [name]);
   }
+
+  async getLeaderboard(): Promise<ILeaderboardEntry[]> {
+    const SQL = `
+      SELECT name, elo, games, wins, losses
+        FROM leaderboard
+        FETCH FIRST 10 ROWS ONLY;`;
+
+    const res = await this.db.query<ILeaderboardEntry, []>(SQL, []);
+    return res.rows;
+  }
 }

@@ -11,8 +11,8 @@ export class PlayersController {
     return this.playersService.create(dto.name);
   }
 
-  @Get("leader-board")
-  leaderBoard(): string {
-    return "This endpoint returns the leader board";
+  @Get("leaderboard")
+  leaderBoard() {
+    return this.playersService.getLeaderboard();
   }
 }
