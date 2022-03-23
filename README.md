@@ -22,6 +22,14 @@ $ npm run start-local-environment
 
 This starts the database and ensures its schema is up to date.
 
+To populate your database with test data, run:
+
+```bash
+$ ./scripts/dummy-data.sh
+```
+
+Standard commands for running the app:
+
 ```bash
 # development
 $ npm run start
