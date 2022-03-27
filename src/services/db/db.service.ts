@@ -1,16 +1,19 @@
 import { Injectable, OnModuleInit } from "@nestjs/common";
 import { Pool, QueryResult, QueryResultRow } from "pg";
+import { ConfigService } from "../config/config.service";
 
 @Injectable()
 export class DbService implements OnModuleInit {
   private pool: Pool;
 
+  constructor(private readonly config: ConfigService) {}
+
   async onModuleInit() {
     this.pool = new Pool({
-      host: "localhost",
-      user: "pong",
-      database: "pong",
-      password: "pong",
+      host: this.config.get().DB_HOST,
+      user: this.config.get().DB_USER,
+      database: this.config.get().DB_DATABASE,
+      password: this.config.get().DB_PASSWORD,
       idleTimeoutMillis: 30000,
       connectionTimeoutMillis: 2000,
     });

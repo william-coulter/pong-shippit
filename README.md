@@ -41,7 +41,7 @@ $ npm run start:prod
 
 To populate your environment with test data, run:
 
-````bash
+```bash
 $ ./scripts/dummy-data.sh
 ```
 
@@ -56,12 +56,10 @@ $ npm run test:e2e
 
 # test coverage
 $ npm run test:cov
-````
+```
 
 ## TODO
 
-- environment config
-- services in their own module
 - API authentication
 - Error handling
 - `DTO` validation
