@@ -8,9 +8,8 @@
   "scripts": {
     "prebuild": "rimraf dist",
     "build": "nest build",
-    "migrate": "./scripts/apply-migrations.sh",
+    "migrate:dev": "./scripts/migrate-db.sh",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
-    "start-local-environment": "docker compose up -d && ./scripts/apply-migrations.sh",
     "start": "nest start",
     "start:dev": "nest start --watch",
     "start:debug": "nest start --debug --watch",

@@ -17,15 +17,13 @@ There are also some additional dependencies:
 Ensure `docker` is running and set up your environment with:
 
 ```bash
-$ npm run start-local-environment
+$ docker compose up -d
 ```
 
-This starts the database and ensures its schema is up to date.
-
-To populate your database with test data, run:
+You should also apply any pending schema migrations to your database with:
 
 ```bash
-$ ./scripts/dummy-data.sh
+$ npm run migrate:dev
 ```
 
 Standard commands for running the app:
@@ -41,6 +39,12 @@ $ npm run start:dev
 $ npm run start:prod
 ```
 
+To populate your environment with test data, run:
+
+````bash
+$ ./scripts/dummy-data.sh
+```
+
 ## Test
 
 ```bash
@@ -52,7 +56,7 @@ $ npm run test:e2e
 
 # test coverage
 $ npm run test:cov
-```
+````
 
 ## TODO
 
