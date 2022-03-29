@@ -12,16 +12,21 @@ CREATE TABLE games_raw (
     player1_score   INT NOT NULL,
     player2_score   INT NOT NULL,
 
+    player1_elo_change INT,
+    player2_elo_change INT,
+
     CONSTRAINT player_uniqueness CHECK (player1 <> player2),
     CONSTRAINT score_uniqueness  CHECK (player1_score <> player2_score)
 );
 
-CREATE VIEW games (id, timestamp, player1, player2, player1_score, player2_score, winner) AS
-    SELECT *, 
-    CASE 
+CREATE VIEW games (id, timestamp, player1, player2, player1_score, player2_score, winner, player1_elo_change, player2_elo_change) AS
+    SELECT id, timestamp, player1, player2, player1_score, player2_score,
+    CASE
         WHEN player1_score > player2_score THEN player1
         ELSE player2
-    END winner
+    END winner,
+    player1_elo_change,
+    player2_elo_change
     FROM games_raw;
 
 CREATE VIEW leaderboard (name, elo, games, wins, losses) AS
@@ -82,7 +87,7 @@ BEGIN
     -- Calculate elo
     RETURN ROUND(
         -- Players score 1 for a win and 0 for a loss (the numeric equivalent of is_winner::INT)
-        the_current_elo + the_K_factor * (is_winner::INT - 
+        the_current_elo + the_K_factor * (is_winner::INT -
             -- S_A (expected score)
             1::NUMERIC(16) / (1 + POWER(10, (the_opponent_elo - the_current_elo)::NUMERIC(16) / 400))
         )
@@ -90,11 +95,25 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
+
+-- Responsible for 2 changes:
+--  1. Updates players' elos as a result of the new game
+--  2. Marks players' elos change as a result of the new game
 CREATE OR REPLACE FUNCTION new_game_trigger_fn()
     RETURNS TRIGGER
     LANGUAGE plpgsql
 AS $$
+DECLARE
+    player1_old_elo INT;
+    player2_old_elo INT;
 BEGIN
+    SELECT elo INTO player1_old_elo FROM players_raw
+        WHERE name = NEW.player1;
+
+    SELECT elo INTO player2_old_elo FROM players_raw
+        WHERE name = NEW.player2;
+
+    -- 1.
     UPDATE players_raw
     SET	elo = calculate_elo(
         NEW.player1,
@@ -102,7 +121,7 @@ BEGIN
         NEW.id,
         NEW.player1_score > NEW.player2_score
     ) WHERE name = NEW.player1;
-    
+
     UPDATE players_raw
     SET	elo = calculate_elo(
         NEW.player2,
@@ -110,7 +129,20 @@ BEGIN
         NEW.id,
         NEW.player2_score > NEW.player1_score
     ) WHERE name = NEW.player2;
-    
+
+    -- 2.
+    WITH p1(elo) AS (
+        SELECT elo FROM players_raw WHERE name = NEW.player1
+    ),
+    p2(elo) AS (
+        SELECT elo FROM players_raw WHERE name = NEW.player2
+    )
+    UPDATE games_raw
+    SET
+      player1_elo_change = (SELECT elo FROM p1) - player1_old_elo,
+      player2_elo_change = (SELECT elo FROM p2) - player2_old_elo
+    WHERE id = NEW.id;
+
     RETURN NEW;
 END;
 $$;
