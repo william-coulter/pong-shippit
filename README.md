@@ -64,3 +64,7 @@ $ npm run test:cov
 - Error handling
 - `DTO` validation
 - migration script stores to maintain file integrity
+
+## Future ideas
+
+- Implement the notion of a `season` (or tournament?) where players' elos reset after a certain period.
