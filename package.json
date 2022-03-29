@@ -8,7 +8,7 @@
   "scripts": {
     "prebuild": "rimraf dist",
     "build": "nest build",
-    "migrate:dev": "./scripts/migrate-db.sh",
+    "migrate:dev": "PGHOST=localhost PGDATABASE=pong PGUSER=pong PGPASSWORD=pong ./scripts/migrate-db.sh",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
     "start": "nest start",
     "start:dev": "nest start --watch",
