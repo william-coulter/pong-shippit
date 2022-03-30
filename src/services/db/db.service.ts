@@ -12,10 +12,7 @@ export class DbService implements OnModuleInit {
 
   async onModuleInit() {
     this.pool = new Pool({
-      host: this.config.get("DB_HOST"),
-      user: this.config.get("DB_USER"),
-      database: this.config.get("DB_DATABASE"),
-      password: this.config.get("DB_PASSWORD"),
+      connectionString: this.config.get("DATABASE_URL"),
       idleTimeoutMillis: 30000,
       connectionTimeoutMillis: 2000,
     });

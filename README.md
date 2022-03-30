@@ -11,6 +11,7 @@ $ npm install
 There are also some additional dependencies:
 
 - `docker` cli
+- `heroku` cli (deployment only)
 
 ## Running the app
 
@@ -57,6 +58,14 @@ $ npm run test:e2e
 # test coverage
 $ npm run test:cov
 ```
+
+## Deployment
+
+Both the API and database are hosted in a `Heroku App`.
+
+Deploying the API has to be done manually through the app's [dashboard](https://dashboard.heroku.com/apps/pong-shippit).
+
+Migrating the database is done via the `npm run migrate:production` command. You have to be authenticated with the `heroku` cli.
 
 ## TODO
 

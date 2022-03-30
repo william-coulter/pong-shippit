@@ -8,7 +8,8 @@
   "scripts": {
     "prebuild": "rimraf dist",
     "build": "nest build",
-    "migrate:dev": "PGHOST=localhost PGDATABASE=pong PGUSER=pong PGPASSWORD=pong ./scripts/migrate-db.sh",
+    "migrate:dev": "DATABASE_URL=postgres://pong:pong@localhost:5432/pong ./scripts/migrate-db.sh",
+    "migrate:production": "DATABASE_URL=`heroku config:get DATABASE_URL -a pong-shippit` ./scripts/migrate-db.sh",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
     "start": "nest start",
     "start:dev": "nest start --watch",
