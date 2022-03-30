@@ -4,6 +4,8 @@ import { AppModule } from "./app.module";
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   app.setGlobalPrefix("pong-shippit");
-  await app.listen(3000);
+  console.log("RUNNING APP WITH ENV:", process.env);
+
+  await app.listen(process.env.PORT);
 }
 bootstrap();
