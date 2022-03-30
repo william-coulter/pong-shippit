@@ -1,8 +1,10 @@
-import { Body, Controller, Get, Post } from "@nestjs/common";
+import { Body, Controller, Get, Post, UseGuards } from "@nestjs/common";
 import { PlayersService } from "src/controllers/players/players.service";
+import { AuthGuard } from "src/guards/auth.guard";
 import { PlayerCreateDto } from "./interfaces/player-create.interface";
 
 @Controller("players")
+@UseGuards(AuthGuard)
 export class PlayersController {
   constructor(private readonly playersService: PlayersService) {}
 

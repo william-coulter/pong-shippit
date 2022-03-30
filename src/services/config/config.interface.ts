@@ -3,4 +3,5 @@ export interface Config {
   DB_USER: string;
   DB_DATABASE: string;
   DB_PASSWORD: string;
+  API_KEY: string;
 }

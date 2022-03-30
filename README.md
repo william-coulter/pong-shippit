@@ -60,7 +60,6 @@ $ npm run test:cov
 
 ## TODO
 
-- API authentication
 - Error handling
 - `DTO` validation
 - migration script stores to maintain file integrity
