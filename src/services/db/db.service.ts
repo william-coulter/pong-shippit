@@ -13,6 +13,7 @@ export class DbService implements OnModuleInit {
   async onModuleInit() {
     this.pool = new Pool({
       connectionString: this.config.get("DATABASE_URL"),
+      ssl: true,
       idleTimeoutMillis: 30000,
       connectionTimeoutMillis: 2000,
     });
