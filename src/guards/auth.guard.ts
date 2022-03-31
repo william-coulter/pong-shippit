@@ -24,6 +24,7 @@ export class AuthGuard implements CanActivate {
     }
 
     console.log(`validating ${maybeKey} against ${this.config.get("API_KEY")}`);
+    console.log("isValidated:", maybeKey === this.config.get("API_KEY"));
     return maybeKey === this.config.get("API_KEY");
   }
 
