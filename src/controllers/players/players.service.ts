@@ -8,7 +8,6 @@ export class PlayersService {
   async create(name: string): Promise<void> {
     const SQL = `INSERT INTO players_raw (name) VALUES ($1)`;
     const res = await this.db.query(SQL, [name]);
-    console.log(`Database response: ${res}`);
   }
 
   async getLeaderboard(): Promise<ILeaderboardEntry[]> {

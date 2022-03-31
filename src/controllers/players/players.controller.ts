@@ -10,7 +10,6 @@ export class PlayersController {
 
   @Post("create")
   create(@Body() dto: PlayerCreateDto) {
-    console.log(`Here with DTO: ${dto}`);
     return this.playersService.create(dto.name);
   }
 
