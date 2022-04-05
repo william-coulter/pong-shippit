@@ -69,6 +69,7 @@ Migrating the database is done via the `npm run migrate:production` command. You
 
 ## TODO
 
+- Change `AuthGuard` to look for the Slack token as well
 - Error handling
 - `DTO` validation
 - migration script stores to maintain file integrity
