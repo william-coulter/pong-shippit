@@ -6,6 +6,6 @@ export class SlackController {
 
   @Post("events")
   events(@Body() body: any) {
-    console.log("received body:", body);
+    return body.challenge;
   }
 }
