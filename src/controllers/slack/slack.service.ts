@@ -5,6 +5,7 @@ import { PlayersService } from "src/controllers/players/players.service";
 import { Config } from "src/services/config/config.interface";
 import { Mention, SlackEvent } from "./interfaces/events.interface";
 import { MentionCommand } from "./interfaces/mention-command.interface";
+import { ILeaderboardEntry } from "src/controllers/players/interfaces/leaderboard.interface";
 
 import fetch, { Headers } from "node-fetch";
 
@@ -108,10 +109,37 @@ export class SlackService {
       case "create game":
         const { command, ...rest } = c;
         await this.gamesService.create({ ...rest });
-        return (await this.playersService.getLeaderboard()).join("\n");
+        return this.leaderboardToString(
+          await this.playersService.getLeaderboard()
+        );
 
       case "get leaderboard":
-        return (await this.playersService.getLeaderboard()).join("\n");
+        return this.leaderboardToString(
+          await this.playersService.getLeaderboard()
+        );
     }
+  }
+
+  private leaderboardToString(ls: ILeaderboardEntry[]): string {
+    if (ls.length === 0) {
+      return "No games played in this tournament";
+    }
+
+    const PADDING = 7;
+
+    const header = `| ${Object.keys(ls[0])
+      .map((k) => ` ${k.padEnd(PADDING, " ")}`)
+      .join("|")}|`;
+
+    const data = ls
+      .map(
+        (l) =>
+          `| ${Object.keys(l)
+            .map((k) => ` ${String(l[k]).padEnd(PADDING, " ")}`)
+            .join("|")}|`
+      )
+      .join("\n");
+
+    return `${header}\n${data}`;
   }
 }

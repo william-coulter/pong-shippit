@@ -1,4 +1,4 @@
-interface ILeaderboardEntry {
+export interface ILeaderboardEntry {
   name: string;
   elo: number;
   games: number;

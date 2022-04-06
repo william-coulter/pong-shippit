@@ -1,5 +1,6 @@
 import { Injectable } from "@nestjs/common";
 import { DbService } from "src/services/db/db.service";
+import { ILeaderboardEntry } from "./interfaces/leaderboard.interface";
 
 @Injectable()
 export class PlayersService {
