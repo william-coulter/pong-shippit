@@ -1,6 +1,8 @@
 import { Injectable } from "@nestjs/common";
+import { ConfigService } from "@nestjs/config";
 import { GamesService } from "src/controllers/games/games.service";
 import { PlayersService } from "src/controllers/players/players.service";
+import { Config } from "src/services/config/config.interface";
 import { Mention, SlackEvent } from "./interfaces/events.interface";
 import { MentionCommand } from "./interfaces/mention-command.interface";
 
@@ -8,7 +10,8 @@ import { MentionCommand } from "./interfaces/mention-command.interface";
 export class SlackService {
   constructor(
     private readonly gamesService: GamesService,
-    private readonly playersService: PlayersService
+    private readonly playersService: PlayersService,
+    private readonly configService: ConfigService<Config>
   ) {}
 
   public async handleEvent(e: SlackEvent): Promise<string> {
@@ -18,6 +21,40 @@ export class SlackService {
 
       default:
         throw new Error(`Unrecognised Slack event: ${e.type}`);
+    }
+  }
+
+  public async postMessage(channel: string, message: string): Promise<void> {
+    const myHeaders = new Headers();
+    myHeaders.append(
+      "Authorization",
+      `Bearer ${this.configService.get("SLACK_APP_OAUTH_TOKEN")}`
+    );
+    myHeaders.append("Content-Type", "application/json");
+
+    const raw = JSON.stringify({
+      channel,
+      blocks: [
+        {
+          type: "section",
+          text: {
+            type: "mrkdwn",
+            text: message,
+          },
+        },
+      ],
+    });
+
+    const requestOptions = {
+      method: "POST",
+      headers: myHeaders,
+      body: raw,
+    };
+
+    try {
+      await fetch("https://slack.com/api/chat.postMessage", requestOptions);
+    } catch (e) {
+      throw new Error(`Could not post message: ${e}`);
     }
   }
 
