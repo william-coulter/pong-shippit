@@ -32,7 +32,7 @@ export class SlackService {
     try {
       return await this.handleMentionCommand(command);
     } catch (e) {
-      throw new Error(`Could not ${command}: ${e}`);
+      throw new Error(`Could not ${command.command}: ${e}`);
     }
   }
 
@@ -54,6 +54,9 @@ export class SlackService {
 
       case "leaderboard":
         return { command: "get leaderboard" };
+
+      default:
+        throw new Error(`'${words[1]}' is not a command`);
     }
   }
 

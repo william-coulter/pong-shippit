@@ -10,6 +10,8 @@ export class SlackController {
   async events(@Body() dto: SlackEventDto) {
     const { event } = dto;
 
+    console.log(JSON.stringify(dto));
+
     if (!event) {
       throw new Error(`No event in payload from Slack: ${JSON.stringify(dto)}`);
     }
