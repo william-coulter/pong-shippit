@@ -1,6 +1,6 @@
 export type SlackEvent = Mention;
 
-interface Mention {
+export interface Mention {
   type: "app_mention";
   client_msg_id: string;
   text: string;

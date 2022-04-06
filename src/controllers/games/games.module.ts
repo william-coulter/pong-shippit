@@ -6,6 +6,7 @@ import { GamesService } from "./games.service";
 @Module({
   imports: [DbModule],
   providers: [GamesService],
+  exports: [GamesService],
   controllers: [GamesController],
 })
 export class GamesModule {}
