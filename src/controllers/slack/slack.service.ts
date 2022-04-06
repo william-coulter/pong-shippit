@@ -6,6 +6,8 @@ import { Config } from "src/services/config/config.interface";
 import { Mention, SlackEvent } from "./interfaces/events.interface";
 import { MentionCommand } from "./interfaces/mention-command.interface";
 
+import fetch, { Headers } from "node-fetch";
+
 @Injectable()
 export class SlackService {
   constructor(

@@ -8,7 +8,7 @@ export class SlackController {
 
   @Post("events")
   async events(@Req() req, @Body() dto: SlackEventDto) {
-    console.log(req);
+    // console.log(req);
 
     const { event } = dto;
 
