@@ -1,4 +1,8 @@
-export type MentionCommand = CreatePlayer | CreateGame | GetLeaderboard;
+export type MentionCommand =
+  | CreatePlayer
+  | CreateGame
+  | GetLeaderboard
+  | GetCommands;
 
 interface CreatePlayer {
   command: "create player";
@@ -15,4 +19,8 @@ interface CreateGame {
 
 interface GetLeaderboard {
   command: "get leaderboard";
+}
+
+interface GetCommands {
+  command: "get commands";
 }

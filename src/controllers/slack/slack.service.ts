@@ -95,28 +95,85 @@ export class SlackService {
       case "leaderboard":
         return { command: "get leaderboard" };
 
-      default:
-        throw new Error(`'${words[1]}' is not a command`);
+      case "commands":
+        return { command: "get commands" };
     }
+    throw new Error(`'${words[1]}' is not a command`);
   }
 
   private async handleMentionCommand(c: MentionCommand): Promise<string> {
     switch (c.command) {
       case "create player":
         await this.playersService.create(c.name);
-        return `Player created: ${c.name}`;
+        return `Player created: '${c.name}'. Welcome to the tournament!`;
 
       case "create game":
         const { command, ...rest } = c;
-        await this.gamesService.create({ ...rest });
-        return this.leaderboardToString(
+        const id = await this.gamesService.create({ ...rest });
+
+        const {
+          player1,
+          player2,
+          player1_score,
+          player2_score,
+          winner,
+          player1_elo_change,
+          player2_elo_change,
+        } = await this.gamesService.get(id);
+
+        const loser = player1 !== winner ? player1 : player2;
+        const winningScore = player1 === winner ? player1_score : player2_score;
+        const losingScore = player1 !== winner ? player1_score : player2_score;
+        const winningEloChange =
+          player1 === winner ? player1_elo_change : player2_elo_change;
+        const losingEloChange =
+          player1 !== winner ? player1_elo_change : player2_elo_change;
+
+        return `${winner} ${this.getDefeatedSynonym(
+          winningScore,
+          losingScore
+        )} ${loser} ${winningScore} to ${losingScore}
+${winner} ${winningEloChange}, ${loser} ${losingEloChange}
+
+New standings:\n${this.leaderboardToString(
           await this.playersService.getLeaderboard()
-        );
+        )}`;
 
       case "get leaderboard":
         return this.leaderboardToString(
           await this.playersService.getLeaderboard()
         );
+
+      case "get commands":
+        return `List of available commands:
+- Add player to tournament: \`@pong player <NAME>\`
+- Add a game to the tournament: \`@pong game <P1> <P1_SCORE> <P2> <P2_SCORE>\`
+- View the leaderboard: \`@pong leaderboard\`
+- List available commands: \`@pong commands\``;
+    }
+  }
+
+  private getDefeatedSynonym(
+    winningScore: number,
+    losingScore: number
+  ): string {
+    const difference = winningScore - losingScore;
+    const ratio = difference / winningScore;
+
+    if (ratio > 0.8) {
+      return "utterly demolished";
+    } else if (ratio > 0.6) {
+      return "confidently beat";
+    } else if (ratio > 0.5) {
+      return "had a smooth win against";
+    } else if (ratio > 0.3) {
+      return "defeated";
+    } else if (ratio > 0.2) {
+      return "just beat";
+    } else if (ratio > 0.1) {
+      return "narrowly won against";
+    } else {
+      return "swindled a win against";
     }
   }
 
@@ -140,6 +197,6 @@ export class SlackService {
       )
       .join("\n");
 
-    return `${header}\n${data}`;
+    return `\`\`\`${header}\n${data}\`\`\``;
   }
 }
