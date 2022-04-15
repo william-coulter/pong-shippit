@@ -129,10 +129,10 @@ export class SlackService {
         const losingEloChange =
           player1 !== winner ? player1_elo_change : player2_elo_change;
 
-        return `${winner} ${this.getDefeatedSynonym(
+        return `${winner} _${this.getDefeatedSynonym(
           winningScore,
           losingScore
-        )} ${loser} ${winningScore} to ${losingScore}
+        )}_ ${loser} ${winningScore} to ${losingScore}
 ${winner} ${winningEloChange}, ${loser} ${losingEloChange}
 
 New standings:\n${this.leaderboardToString(
@@ -145,8 +145,9 @@ New standings:\n${this.leaderboardToString(
         );
 
       case "get commands":
-        return `List of available commands:
-- Add player to tournament: \`@pong player <NAME>\`
+        return `*List of available commands*
+
+- Add a player to tournament: \`@pong player <NAME>\`
 - Add a game to the tournament: \`@pong game <P1> <P1_SCORE> <P2> <P2_SCORE>\`
 - View the leaderboard: \`@pong leaderboard\`
 - List available commands: \`@pong commands\``;
@@ -182,17 +183,30 @@ New standings:\n${this.leaderboardToString(
       return "No games played in this tournament";
     }
 
-    const PADDING = 7;
+    const PADDINGS = {};
+    Object.keys(ls[0]).forEach((k) => {
+      PADDINGS[k] = k.length;
+    });
+    ls.forEach((l) => {
+      Object.keys(l).forEach((k) => {
+        const padding = String(l[k]).length;
+        if (padding > PADDINGS[k]) {
+          PADDINGS[k] = padding;
+        }
+      });
+    });
 
-    const header = `| ${Object.keys(ls[0])
-      .map((k) => ` ${k.padEnd(PADDING, " ")}`)
+    const header = `|${Object.keys(ls[0])
+      .map((k) => ` ${k.padEnd(PADDINGS[k], " ")} `)
+      .join("|")}|\n|${Object.keys(ls[0])
+      .map((k) => ` ${"".padEnd(PADDINGS[k], "-")} `)
       .join("|")}|`;
 
     const data = ls
       .map(
         (l) =>
-          `| ${Object.keys(l)
-            .map((k) => ` ${String(l[k]).padEnd(PADDING, " ")}`)
+          `|${Object.keys(l)
+            .map((k) => ` ${String(l[k]).padEnd(PADDINGS[k], " ")} `)
             .join("|")}|`
       )
       .join("\n");
