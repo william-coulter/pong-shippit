@@ -132,10 +132,10 @@ export class SlackService {
         return `${winner} _${this.getDefeatedSynonym(
           winningScore,
           losingScore
-        )}_ ${loser} ${winningScore} to ${losingScore}
-${winner} ${winningEloChange}, ${loser} ${losingEloChange}
+        )}_ ${loser}, ${winningScore} to ${losingScore}!
+${winner} +${winningEloChange}, ${loser} ${losingEloChange}
 
-New standings:\n${this.leaderboardToString(
+*New standings*\n${this.leaderboardToString(
           await this.playersService.getLeaderboard()
         )}`;
 
