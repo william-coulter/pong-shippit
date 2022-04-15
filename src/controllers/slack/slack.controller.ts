@@ -1,15 +1,15 @@
-import { Body, Controller, Post, Req } from "@nestjs/common";
+import { Body, Controller, Post, UseGuards } from "@nestjs/common";
+import { SlackAuthGuard } from "src/guards/slack-auth.guard";
 import { SlackEventDto } from "./interfaces/events.interface";
 import { SlackService } from "./slack.service";
 
 @Controller("slack")
+@UseGuards(SlackAuthGuard)
 export class SlackController {
   constructor(private readonly slackService: SlackService) {}
 
   @Post("events")
-  async events(@Req() req, @Body() dto: SlackEventDto) {
-    console.log(req);
-
+  async events(@Body() dto: SlackEventDto) {
     const { event } = dto;
 
     try {
@@ -24,7 +24,7 @@ export class SlackController {
     } catch (e) {
       return await this.slackService.postMessage(
         event.channel,
-        `Error!\n>${e}`
+        `*Error*\n>${e}`
       );
     }
   }
