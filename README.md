@@ -70,6 +70,7 @@ Migrating the database is done via the `npm run migrate:production` command. You
 ## Improvements
 
 - Error handling
+- Logging
 - `DTO` validation
 - Migration script stores hash to maintain file integrity
 - Make player elo a function of `games_raw` as opposed to keeping track of state
