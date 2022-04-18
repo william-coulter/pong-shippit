@@ -19,38 +19,31 @@ CREATE TABLE games_raw (
     CONSTRAINT score_uniqueness  CHECK (player1_score <> player2_score)
 );
 
-CREATE VIEW games (id, timestamp, winner, loser, winning_score, losing_score, winning_elo_change, losing_elo_change) AS
-    WITH winners (id, is_player1) AS (
-        SELECT id, player1_score > player2_score
+CREATE VIEW games_2 (id, timestamp, winner, loser, winning_score, losing_score, winning_elo_change, losing_elo_change) AS
+    WITH p1_winners AS (
+        SELECT id, timestamp,
+            player1,
+            player2,
+            player1_score,
+            player2_score,
+            player1_elo_change,
+            player2_elo_change
         FROM games_raw
+        WHERE player1_score > player2_score
+    ), p2_winners AS (
+        SELECT id, timestamp,
+            player2,
+            player1,
+            player2_score,
+            player1_score,
+            player2_elo_change,
+            player1_elo_change
+        FROM games_raw
+        WHERE player2_score > player1_score
     )
-    SELECT g.id, g.timestamp,
-    CASE
-        WHEN w.is_player1 IS TRUE THEN g.player1
-        ELSE g.player2
-    END winner,
-    CASE
-        WHEN w.is_player1 IS TRUE THEN g.player2
-        ELSE g.player1
-    END loser,
-    CASE
-        WHEN w.is_player1 IS TRUE THEN g.player1_score
-        ELSE g.player2_score
-    END winning_score,
-    CASE
-        WHEN w.is_player1 IS TRUE THEN g.player2_score
-        ELSE g.player1_score
-    END losing_score,
-    CASE
-        WHEN w.is_player1 IS TRUE THEN g.player1_elo_change
-        ELSE g.player2_elo_change
-    END winning_elo_change,
-    CASE
-        WHEN w.is_player1 IS TRUE THEN g.player2_elo_change
-        ELSE g.player1_elo_change
-    END losing_elo_change
-    FROM games_raw g
-    JOIN winners w ON w.id = g.id;
+    SELECT * FROM p1_winners
+        UNION ALL
+    SELECT * FROM p2_winners;
 
 CREATE VIEW leaderboard (name, elo, games, wins, losses) AS
     SELECT p.name, p.elo,
