@@ -1,5 +1,4 @@
 import { Injectable } from "@nestjs/common";
-import { QueryResult } from "pg";
 import { DbService } from "src/services/db/db.service";
 import { GameCreateDto } from "./interfaces/game-create.interface";
 import { Game } from "./interfaces/game.interface";
@@ -26,7 +25,7 @@ export class GamesService {
         player1Score,
         player2Score,
       ])
-      .then(this.getOne)
+      .then(this.db.getOne)
       .then((x) => x.id);
   }
 
@@ -42,16 +41,6 @@ export class GamesService {
       losing_elo_change
     FROM games WHERE id = $1`;
 
-    return this.db.query<Game, [number]>(SQL, [id]).then(this.getOne);
-  }
-
-  private getOne<T>(r: QueryResult<T>): T {
-    if (r.rows.length !== 1) {
-      throw new Error(
-        `Could not get one element from result: ${JSON.stringify(r)}`
-      );
-    }
-
-    return r.rows[0];
+    return this.db.query<Game, [number]>(SQL, [id]).then(this.db.getOne);
   }
 }

@@ -35,4 +35,14 @@ export class DbService implements OnModuleInit {
     client.release();
     return result;
   }
+
+  getOne<T>(r: QueryResult<T>): T {
+    if (r.rows.length !== 1) {
+      throw new Error(
+        `Could not get one element from result: ${JSON.stringify(r)}`
+      );
+    }
+
+    return r.rows[0];
+  }
 }
