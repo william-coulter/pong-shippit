@@ -19,15 +19,38 @@ CREATE TABLE games_raw (
     CONSTRAINT score_uniqueness  CHECK (player1_score <> player2_score)
 );
 
-CREATE VIEW games (id, timestamp, player1, player2, player1_score, player2_score, winner, player1_elo_change, player2_elo_change) AS
-    SELECT id, timestamp, player1, player2, player1_score, player2_score,
+CREATE VIEW games (id, timestamp, winner, loser, winning_score, losing_score, winning_elo_change, losing_elo_change) AS
+    WITH winners (id, is_player1) AS (
+        SELECT id, player1_score > player2_score
+        FROM games_raw
+    )
+    SELECT g.id, g.timestamp,
     CASE
-        WHEN player1_score > player2_score THEN player1
-        ELSE player2
+        WHEN w.is_player1 IS TRUE THEN g.player1
+        ELSE g.player2
     END winner,
-    player1_elo_change,
-    player2_elo_change
-    FROM games_raw;
+    CASE
+        WHEN w.is_player1 IS TRUE THEN g.player2
+        ELSE g.player1
+    END loser,
+    CASE
+        WHEN w.is_player1 IS TRUE THEN g.player1_score
+        ELSE g.player2_score
+    END winning_score,
+    CASE
+        WHEN w.is_player1 IS TRUE THEN g.player2_score
+        ELSE g.player1_score
+    END losing_score,
+    CASE
+        WHEN w.is_player1 IS TRUE THEN g.player1_elo_change
+        ELSE g.player2_elo_change
+    END winning_elo_change,
+    CASE
+        WHEN w.is_player1 IS TRUE THEN g.player2_elo_change
+        ELSE g.player1_elo_change
+    END losing_elo_change
+    FROM games_raw g
+    JOIN winners w ON w.id = g.id;
 
 CREATE VIEW leaderboard (name, elo, games, wins, losses) AS
     SELECT p.name, p.elo,

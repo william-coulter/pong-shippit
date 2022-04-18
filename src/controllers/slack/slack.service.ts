@@ -112,28 +112,19 @@ export class SlackService {
         const id = await this.gamesService.create({ ...rest });
 
         const {
-          player1,
-          player2,
-          player1_score,
-          player2_score,
           winner,
-          player1_elo_change,
-          player2_elo_change,
+          loser,
+          winning_score,
+          losing_score,
+          winning_elo_change,
+          losing_elo_change,
         } = await this.gamesService.get(id);
 
-        const loser = player1 !== winner ? player1 : player2;
-        const winningScore = player1 === winner ? player1_score : player2_score;
-        const losingScore = player1 !== winner ? player1_score : player2_score;
-        const winningEloChange =
-          player1 === winner ? player1_elo_change : player2_elo_change;
-        const losingEloChange =
-          player1 !== winner ? player1_elo_change : player2_elo_change;
-
         return `${winner} _${this.getDefeatedSynonym(
-          winningScore,
-          losingScore
-        )}_ ${loser}, ${winningScore} to ${losingScore}!
-${winner} +${winningEloChange}, ${loser} ${losingEloChange}
+          winning_score,
+          losing_score
+        )}_ ${loser}, ${winning_score} to ${losing_score}!
+${winner} +${winning_elo_change}, ${loser} ${losing_elo_change}
 
 *New standings*\n${this.leaderboardToString(
           await this.playersService.getLeaderboard()

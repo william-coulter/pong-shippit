@@ -67,12 +67,12 @@ Deploying the API has to be done manually through the app's [dashboard](https://
 
 Migrating the database is done via the `npm run migrate:production` command. You have to be authenticated with the `heroku` cli.
 
-## TODO
+## Improvements
 
-- Change `AuthGuard` to look for the Slack token as well
 - Error handling
 - `DTO` validation
-- migration script stores to maintain file integrity
+- Migration script stores hash to maintain file integrity
+- Make player elo a function of `games_raw` as opposed to keeping track of state
 
 ## Future ideas
 
