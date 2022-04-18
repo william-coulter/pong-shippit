@@ -14,8 +14,7 @@ export class PlayersService {
   async getLeaderboard(): Promise<ILeaderboardEntry[]> {
     const SQL = `
       SELECT name, elo, games, wins, losses
-        FROM leaderboard
-        FETCH FIRST 10 ROWS ONLY;`;
+        FROM leaderboard`;
 
     const res = await this.db.query<ILeaderboardEntry, []>(SQL, []);
     return res.rows;
