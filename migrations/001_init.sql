@@ -1,6 +1,6 @@
 CREATE TABLE players_raw (
     name    TEXT PRIMARY KEY,
-    elo     INT DEFAULT 1200
+    elo     INT DEFAULT 1600
 );
 
 CREATE TABLE games_raw (
