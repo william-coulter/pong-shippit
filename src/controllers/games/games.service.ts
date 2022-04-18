@@ -31,7 +31,16 @@ export class GamesService {
   }
 
   async get(id: number): Promise<Game> {
-    const SQL = `SELECT * FROM games WHERE id = $1`;
+    const SQL = `SELECT
+      id,
+      timestamp,
+      winner,
+      loser,
+      winning_score,
+      losing_score,
+      winning_elo_change,
+      losing_elo_change
+    FROM games WHERE id = $1`;
 
     return this.db.query<Game, [number]>(SQL, [id]).then(this.getOne);
   }

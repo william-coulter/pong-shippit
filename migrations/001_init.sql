@@ -79,7 +79,7 @@ CREATE VIEW player_k_factors (name, k) AS
 
 -- See https://en.wikipedia.org/wiki/Elo_rating_system#:~:text=Supposing%20player%C2%A0A,player%27s%20rating%20is
 -- for calculation logic and variable names
-CREATE OR REPLACE FUNCTION calculate_elo(
+CREATE FUNCTION calculate_elo(
     the_player_name 	TEXT,
     the_opponent        TEXT,
     the_game_id         INT8,
@@ -122,7 +122,7 @@ $$ LANGUAGE plpgsql;
 -- Responsible for 2 changes:
 --  1. Updates players' elos as a result of the new game
 --  2. Marks players' elos change as a result of the new game
-CREATE OR REPLACE FUNCTION new_game_trigger_fn()
+CREATE FUNCTION new_game_trigger_fn()
     RETURNS TRIGGER
     LANGUAGE plpgsql
 AS $$
