@@ -52,13 +52,13 @@ CREATE VIEW games (id, timestamp, winner, loser, winning_score, losing_score, wi
     FROM games_raw g
     JOIN winners w ON w.id = g.id;
 
-CREATE VIEW leaderboard (name, elo, games, wins, losses) AS
+CREATE OR REPLACE VIEW leaderboard (name, elo, games, wins, losses) AS
     SELECT p.name, p.elo,
         COUNT(g.id) games,
-        SUM((p.name = g.winner)::INT) wins,
-        SUM((p.name <> g.winner)::INT) losses
+        COALESCE(SUM((p.name = g.winner)::INT), 0) wins,
+        COALESCE(SUM((p.name = g.loser)::INT), 0) losses
     FROM players_raw p
-    JOIN games g ON p.name = g.player1 OR p.name = g.player2
+    LEFT JOIN games g ON p.name = g.winner OR p.name = g.loser
     GROUP BY p.name, p.elo
     ORDER BY elo DESC;
 
