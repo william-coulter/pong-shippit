@@ -19,7 +19,7 @@ CREATE TABLE games_raw (
     CONSTRAINT score_uniqueness  CHECK (player1_score <> player2_score)
 );
 
-CREATE VIEW games_2 (id, timestamp, winner, loser, winning_score, losing_score, winning_elo_change, losing_elo_change) AS
+CREATE VIEW games (id, timestamp, winner, loser, winning_score, losing_score, winning_elo_change, losing_elo_change) AS
     WITH p1_winners AS (
         SELECT id, timestamp,
             player1,
