@@ -78,3 +78,5 @@ Migrating the database is done via the `npm run migrate:production` command. You
 ## Future ideas
 
 - Implement the notion of a `season` (or tournament?) where players' elos reset after a certain period.
+- Game of the Day
+- Elo decay
