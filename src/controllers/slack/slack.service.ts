@@ -151,22 +151,24 @@ ${winner} +${winning_elo_change}, ${loser} ${losing_elo_change}
   ): string {
     const difference = winningScore - losingScore;
     const ratio = difference / winningScore;
-
+    let options: Array<string> = [];
     if (ratio > 0.8) {
-      return "utterly demolished";
+      options = ["utterly demolished", "obliterated", "annihilated", "expunged"];
     } else if (ratio > 0.6) {
-      return "confidently beat";
+      options = ["confidently beat", "flattened"];
     } else if (ratio > 0.5) {
-      return "had a smooth win against";
+      options = ["had a smooth win against", "didn't break a sweat against"];
     } else if (ratio > 0.3) {
-      return "defeated";
+      options = ["defeated", "outmanoeuvred", "out pinged and out ponged"];
     } else if (ratio > 0.2) {
-      return "just beat";
+      options = ["just beat", "made short work of"];
     } else if (ratio > 0.1) {
-      return "narrowly won against";
+      options = ["narrowly won against", "pried a victory from the clutches of"];
     } else {
-      return "swindled a win against";
+      options = ["swindled a win against"]
     }
+    const random = Math.floor(Math.random() * options.length);
+    return options[random];
   }
 
   private leaderboardToString(ls: ILeaderboardEntry[]): string {
