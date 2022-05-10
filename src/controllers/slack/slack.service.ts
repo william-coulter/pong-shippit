@@ -166,6 +166,7 @@ ${winner} +${winning_elo_change}, ${loser} ${losing_elo_change}
       options = ["narrowly won against", "made short work of"];
     } else {
       options = ["swindled a win against"]
+    }
     const random = Math.floor(Math.random() * options.length);
     return options[random];
   }
