@@ -159,11 +159,11 @@ ${winner} +${winning_elo_change}, ${loser} ${losing_elo_change}
     } else if (ratio > 0.5) {
       options = ["had a smooth win against", "didn't break a sweat against"];
     } else if (ratio > 0.3) {
-      options = ["defeated", "outmanoeuvred"];
+      options = ["defeated", "outmanoeuvred", "out pinged and out ponged"];
     } else if (ratio > 0.2) {
-      options = ["just beat", "wrestled a win from"];
+      options = ["just beat", "made short work of"];
     } else if (ratio > 0.1) {
-      options = ["narrowly won against", "made short work of"];
+      options = ["narrowly won against", "pried a victory from the clutches of"];
     } else {
       options = ["swindled a win against"]
     }
