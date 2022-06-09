@@ -153,7 +153,12 @@ ${winner} +${winning_elo_change}, ${loser} ${losing_elo_change}
     const ratio = difference / winningScore;
     let options: Array<string> = [];
     if (ratio > 0.8) {
-      options = ["utterly demolished", "obliterated", "annihilated", "expunged"];
+      options = [
+        "utterly demolished",
+        "obliterated",
+        "annihilated",
+        "expunged",
+      ];
     } else if (ratio > 0.6) {
       options = ["confidently beat", "flattened"];
     } else if (ratio > 0.5) {
@@ -163,9 +168,12 @@ ${winner} +${winning_elo_change}, ${loser} ${losing_elo_change}
     } else if (ratio > 0.2) {
       options = ["just beat", "made short work of"];
     } else if (ratio > 0.1) {
-      options = ["narrowly won against", "pried a victory from the clutches of"];
+      options = [
+        "narrowly won against",
+        "pried a victory from the clutches of",
+      ];
     } else {
-      options = ["swindled a win against"]
+      options = ["swindled a win against"];
     }
     const random = Math.floor(Math.random() * options.length);
     return options[random];
@@ -180,6 +188,7 @@ ${winner} +${winning_elo_change}, ${loser} ${losing_elo_change}
     Object.keys(ls[0]).forEach((k) => {
       PADDINGS[k] = k.length;
     });
+
     ls.forEach((l) => {
       Object.keys(l).forEach((k) => {
         const padding = String(l[k]).length;

@@ -13,7 +13,7 @@ export class PlayersService {
 
   async getLeaderboard(): Promise<ILeaderboardEntry[]> {
     const SQL = `
-      SELECT name, elo, games, wins, losses
+      SELECT row_number () over (order by elo desc) rank, name, elo, games, wins, losses
         FROM leaderboard`;
 
     const res = await this.db.query<ILeaderboardEntry, []>(SQL, []);
